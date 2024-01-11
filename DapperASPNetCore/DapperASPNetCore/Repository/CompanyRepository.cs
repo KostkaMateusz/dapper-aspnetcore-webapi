@@ -106,7 +106,7 @@ public class CompanyRepository : ICompanyRepository
         }
     }
 
-    public async Task<Company> GetCompanyEmployeesMultipleResults(int id)
+    public async Task<Company?> GetCompanyEmployeesMultipleResults(int id)
     {
         var query = "SELECT * FROM Companies WHERE Id = @Id;" +
                     "SELECT * FROM Employees WHERE CompanyId = @Id";
@@ -115,7 +115,8 @@ public class CompanyRepository : ICompanyRepository
         using (var multi = await connection.QueryMultipleAsync(query, new { id }))
         {
             var company = await multi.ReadSingleOrDefaultAsync<Company>();
-            if (company != null)
+            
+            if (company is not null)
                 company.Employees = (await multi.ReadAsync<Employee>()).ToList();
 
             return company;

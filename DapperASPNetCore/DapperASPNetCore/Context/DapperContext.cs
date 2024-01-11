@@ -5,15 +5,12 @@ namespace DapperASPNetCore.Context;
 
 public class DapperContext
 {
-    private readonly IConfiguration _configuration;
     private readonly string _connectionString;
 
     public DapperContext(IConfiguration configuration)
     {
-        _configuration = configuration;
-        _connectionString = _configuration.GetConnectionString("SqlConnection");
+        _connectionString = configuration.GetConnectionString("SqlConnection") ?? throw new ApplicationException("The connection string is null");
     }
 
-    public IDbConnection CreateConnection()
-        => new SqlConnection(_connectionString);
+    public IDbConnection CreateConnection() => new SqlConnection(_connectionString);
 }
