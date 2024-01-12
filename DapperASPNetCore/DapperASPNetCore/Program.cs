@@ -1,8 +1,15 @@
 using DapperASPNetCore;
+using DapperASPNetCore.Context;
+using DapperASPNetCore.Contracts;
+using DapperASPNetCore.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.ConfigureServices();
+
+builder.Services.AddSingleton<DapperContext>();
+builder.Services.AddScoped<ICompanyRepository, CompanyRepository>();
+builder.Services.AddControllers();
+
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
